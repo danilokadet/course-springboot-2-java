@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -32,16 +31,16 @@ public class Product implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories = new HashSet<Category>();
+	private Set<Category> categories = new HashSet<>();
 
 	@OneToMany(mappedBy = "id.product")
-	private Set<OrderItem> items = new HashSet();
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public Product() {
-
 	}
 
 	public Product(Long id, String name, String description, Double price, String imgUrl) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -77,8 +76,8 @@ public class Product implements Serializable {
 		return price;
 	}
 
-	public void setPrice(Double prince) {
-		this.price = prince;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public String getImgUrl() {
@@ -93,6 +92,15 @@ public class Product implements Serializable {
 		return categories;
 	}
 
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<>();
+		for (OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,18 +109,6 @@ public class Product implements Serializable {
 		return result;
 	}
 
-	@JsonIgnore
-	public Set<Order> getOrders(){
-		
-		Set<Order> set = new HashSet();
-		
-		for (OrderItem x : items) {
-			
-			set.add(x.getOrder());
-		}
-		
-		return set;
-	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -129,5 +125,4 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
-
 }

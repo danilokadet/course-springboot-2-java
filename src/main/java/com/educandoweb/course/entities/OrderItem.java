@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrderItem implements Serializable{
-
+public class OrderItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -22,7 +21,6 @@ public class OrderItem implements Serializable{
 	private Double price;
 	
 	public OrderItem() {
-		
 	}
 
 	public OrderItem(Order order, Product product, Integer quantity, Double price) {
@@ -39,17 +37,14 @@ public class OrderItem implements Serializable{
 	}
 	
 	public void setOrder(Order order) {
-		
 		id.setOrder(order);
 	}
 	
 	public Product getProduct() {
-		
 		return id.getProduct();
 	}
 	
 	public void setProduct(Product product) {
-		
 		id.setProduct(product);
 	}
 	
@@ -69,6 +64,10 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 
+	public Double getSubTotal() {
+		return price * quantity;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,11 +76,6 @@ public class OrderItem implements Serializable{
 		return result;
 	}
 
-	public Double getSubTotal() {
-		
-		return price * quantity;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -98,7 +92,4 @@ public class OrderItem implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-
 }
